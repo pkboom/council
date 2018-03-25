@@ -9,7 +9,7 @@
             This thead has been locked. No more replies are allowed.
         </p>
         
-        <new-reply @added="add" v-else></new-reply>
+        <new-reply @created="add" v-else></new-reply>
     </div>
 </template>
 

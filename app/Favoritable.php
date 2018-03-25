@@ -19,7 +19,10 @@ trait Favoritable
     public function favorite()
     {
         $attributes = ['user_id' => auth()->id()];
+
         if (!$this->favorites()->where($attributes)->exists()) {
+            Reputation::award($this->owner, Reputation::REPLY_FAVORITED);
+
             return $this->favorites()->create($attributes);
         }
     }
@@ -39,9 +42,7 @@ trait Favoritable
     {
         $attributes = ['user_id' => auth()->id()];
 
-        // This is an sql query.
-        // In this way, there is no Favorite instance deleting itself.
-        // $this->favorites()->where($attributes)->delete();
+        Reputation::reduce($this->owner, Reputation::REPLY_FAVORITED);
 
         // Delete is implemented on each model, which leads to firing a model event.
         $this->favorites()->where($attributes)->get()->each->delete();

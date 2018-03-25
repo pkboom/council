@@ -24,10 +24,14 @@ class Reply extends Model
 
         static::created(function ($reply) {
             $reply->thread->increment('replies_count');
+
+            Reputation::award($reply->owner, Reputation::REPLY_POSTED);
         });
 
         static::deleting(function ($reply) {
             $reply->thread->decrement('replies_count');
+
+            Reputation::reduce($reply->owner, Reputation::REPLY_POSTED);
         });
     }
 

@@ -3,6 +3,10 @@
         <div class="level">
             <img :src="avatar" alt="" width="50" height="50" class="mr-1">
             <h1 v-text="user.name"></h1>
+            <h1>
+                {{ user.name }}
+                <small v-text="reputation"></small>
+            </h1>
         </div>
 
         <form v-if="canUpdate" method="post" enctype="multipart/form-data">
@@ -28,6 +32,10 @@
         computed: {
             canUpdate() {
                 return this.authorize(user => user.id === this.user.id);
+            },
+
+            reputation() {
+                return this.user.reputation + 'XP';
             }
         },
 
