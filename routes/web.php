@@ -35,3 +35,10 @@ Route::post('/api/users/{user}/avatar', 'Api\UserAvatarController@store')->middl
 
 Route::post('locked-threads/{thread}', 'LockedThreadController@store')->middleware('admin')->name('locked-threads.store');
 Route::delete('locked-threads/{thread}', 'LockedThreadController@destory')->middleware('admin')->name('locked-threads.destory');
+
+Route::namespace('Admin')->group(function () {
+    Route::get('/', 'DashboardController@index')->name('admin.dashboard.index');
+    Route::get('/channels', 'ChannelsController@index')->name('admin.channels.index');
+    Route::post('/channels', 'ChannelsController@store')->name('admin.channels.store');
+    Route::get('/channels/create', 'ChannelsController@create')->name('admin.channels.cretae');
+})->middleware('admin');

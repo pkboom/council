@@ -22,6 +22,10 @@ class User extends Authenticatable
         'confirmed' => 'boolean'
     ];
 
+    protected $appends = [
+        'isAdmin'
+    ];
+
     public function getRouteKeyName()
     {
         return 'name';
@@ -72,6 +76,11 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return in_array($this->name, ['john', 'jason', 'a']);
+        return in_array($this->email, config('council.administrators'));
+    }
+
+    public function getIsAdminAttribute()
+    {
+        return $this->isAdmin();
     }
 }
