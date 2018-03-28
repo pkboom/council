@@ -52,12 +52,14 @@ class ThreadTest extends TestCase
     {
         Notification::fake();
 
+        $john = create(User::class);
+
         $this->signIn()
             ->thread
             ->subscribe()
             ->addReply([
                 'body' => 'Foobar',
-                'user_id' => 999
+                'user_id' => $john->id
             ]);
 
         Notification::assertSentTo(auth()->user(), ThreadWasUpdated::class);
@@ -147,5 +149,13 @@ class ThreadTest extends TestCase
         $thread->visits()->record(); // 100 to 101
 
         $this->assertEquals(2, $thread->visits()->count());
+    }
+
+    /** @test */
+    public function a_thread_body_is_sanitized_automatically()
+    {
+        $this->thread->update(['body' => '<script>alert("bad")</script><p>This is okay.</p>']);
+
+        $this->assertEquals('<p>This is okay.</p>', $this->thread->body);
     }
 }

@@ -50,15 +50,15 @@ class UpdateThreadsTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function this()
-    {
-        $foo = ['foo' => 'bar'];
+    // /** @test */
+    // public function this()
+    // {
+    //     $foo = ['foo' => 'bar'];
 
-        $bar = ['foo' => 'bar2'];
+    //     $bar = ['foo' => 'bar2'];
 
-        dd($foo + $bar);
-        // dd(array_merge_recursive($foo, $bar));
-        // dd(array_merge($foo, $bar));
-    }
+    //     // dd($foo + $bar);
+    //     // dd(array_merge_recursive($foo, $bar));
+    //     dd(array_merge($foo, $bar));
+    // }
 }

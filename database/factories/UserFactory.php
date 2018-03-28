@@ -25,9 +25,9 @@ $factory->state(App\User::class, 'unconfirmed', [
 //     ];
 // });
 
-$factory->state(App\User::class, 'admin', [
-    'name' => 'john',
-]);
+// $factory->state(App\User::class, 'admin', [
+//     'name' => 'john',
+// ]);
 
 $factory->define(App\Thread::class, function (Faker $faker) {
     $title = $faker->sentence;

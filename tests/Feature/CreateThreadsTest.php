@@ -71,7 +71,7 @@ class CreateThreadsTest extends TestCase
         // We need to verify Recaptcha works actually.
         unset(app()[Recaptcha::class]);
 
-        $this->publishThread(['g-recaptcha-response' => 'test'])
+        $this->publishThread()
             ->assertSessionHasErrors('g-recaptcha-response');
     }
 

@@ -8,7 +8,6 @@
 
     <div class="panel-body">
         <div class="form-group">
-            {{--  <textarea rows="10" class="form-control" v-model="form.body"></textarea>  --}}
             <wysiwyg :value="form.body"></wysiwyg>
         </div>
     </div>
