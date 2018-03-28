@@ -2,7 +2,7 @@
 
 return [
     'administrator' => [
-        'a'
+        'a@a.com'
     ],
 
     'recaptcha' => [

@@ -10,7 +10,7 @@ class ChannelController extends Controller
 {
     public function index()
     {
-        return view('admin.channels.index')->with('channels', Channel::with('threads')->get());
+        return view('admin.channels.index', ['channels' => Channel::with('threads')->get()]);
     }
 
     public function create()

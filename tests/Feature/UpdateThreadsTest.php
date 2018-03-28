@@ -49,4 +49,16 @@ class UpdateThreadsTest extends TestCase
             'body' => 'new body'
         ]);
     }
+
+    /** @test */
+    public function this()
+    {
+        $foo = ['foo' => 'bar'];
+
+        $bar = ['foo' => 'bar2'];
+
+        dd($foo + $bar);
+        // dd(array_merge_recursive($foo, $bar));
+        // dd(array_merge($foo, $bar));
+    }
 }

@@ -56,7 +56,7 @@
                 @else
                     <user-notifications></user-notifications>
                     
-                    @if (auth()->user()->isAdmin())
+                    @if (auth()->user()->isAdmin)
                         <li><a href="/admin"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
                     @endif
                     

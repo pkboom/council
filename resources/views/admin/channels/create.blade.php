@@ -11,7 +11,7 @@
 
         <div class="form-group">
             <label for="description">Description</label>
-            <input type="text" class="form-control" id="description" name="desciption" value="{{ old('description') }}" required>
+            <input type="text" class="form-control" id="description" name="description" value="{{ old('description') }}" required>
         </div>
 
         <div class="form-group">

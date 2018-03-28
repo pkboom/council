@@ -18,7 +18,14 @@
                     <td>{{ $channel->name }}</td>
                     <td>{{ $channel->slug }}</td>
                     <td>{{ $channel->description }}</td>
-                    <td>{{ $channel->threads }}</td>
+                    <td>
+                        {{ count($channel->threads) }}
+                        {{--  @forelse ($channel->threads()->pluck('title') as $title)
+                            {{ $title }}<br>
+                        @empty
+                            Nothing
+                        @endforelse  --}}
+                    </td>
                 </tr>
             @empty
                 <tr>

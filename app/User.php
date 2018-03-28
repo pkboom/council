@@ -74,13 +74,8 @@ class User extends Authenticatable
         $this->save();
     }
 
-    public function isAdmin()
-    {
-        return in_array($this->email, config('council.administrators'));
-    }
-
     public function getIsAdminAttribute()
     {
-        return $this->isAdmin();
+        return in_array($this->email, config('council.administrator'));
     }
 }
