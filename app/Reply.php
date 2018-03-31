@@ -25,13 +25,13 @@ class Reply extends Model
         static::created(function ($reply) {
             $reply->thread->increment('replies_count');
 
-            Reputation::award($reply->owner, Reputation::REPLY_POSTED);
+            Reputation::gain($reply->owner, Reputation::REPLY_POSTED);
         });
 
-        static::deleting(function ($reply) {
+        static::deleted(function ($reply) {
             $reply->thread->decrement('replies_count');
 
-            Reputation::reduce($reply->owner, Reputation::REPLY_POSTED);
+            Reputation::lose($reply->owner, Reputation::REPLY_POSTED);
         });
     }
 
@@ -52,7 +52,7 @@ class Reply extends Model
 
     public function wasJustPublished()
     {
-        // return false;
+        // return false; // Don't mind me replying as often as possible
         return $this->created_at->gt(Carbon::now()->subMinute());
     }
 

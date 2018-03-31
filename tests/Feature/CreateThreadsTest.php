@@ -28,6 +28,11 @@ class CreateThreadsTest extends TestCase
                 $m->shouldReceive('passes')->andReturn(true);
             });
         });
+
+        // the same
+        // $mock = \Mockery::mock(Recaptcha::class);
+        // $mock->shouldReceive('passes')->andReturn(true);
+        // app()->singleton(Recaptcha::class, $mock);
     }
 
     /** @test */

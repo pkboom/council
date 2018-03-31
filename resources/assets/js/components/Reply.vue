@@ -22,7 +22,7 @@
                     </div>
 
                     <button class="btn btn-xs btn-primary">Update</button>
-                    <button class="btn btn-xs btn-link" @click="editing = false" type="button">Cancel</button>
+                    <button class="btn btn-xs btn-link" @click="cancel" type="button">Cancel</button>
                 </form>
             </div>
 
@@ -95,6 +95,12 @@
                 axios.post('/replies/' + this.id + '/best');
 
                 window.events.$emit('best-reply-selected', this.id);
+            },
+
+            cancel() {
+                this.editing = false;
+
+                this.body = this.reply.body;
             }
         }
     }

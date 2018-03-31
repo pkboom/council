@@ -58,6 +58,8 @@ class User extends Authenticatable
     {
         // Fetch a specific one => hasOne relationship
         // User has one relation of latest reply
+        // Benefit of having hasOne relationship:
+        // You can use it as a property
         return $this->hasOne(Reply::class)->latest();
     }
 

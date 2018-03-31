@@ -11,12 +11,12 @@ class Reputation extends Model
     const BEST_REPLY_AWARED = 50;
     const REPLY_FAVORITED = 5;
 
-    public static function award($user, $points)
+    public static function gain($user, $points)
     {
         $user->increment('reputation', $points);
     }
 
-    public static function reduce($user, $points)
+    public static function lose($user, $points)
     {
         $user->decrement('reputation', $points);
     }

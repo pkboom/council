@@ -95,7 +95,7 @@ class ParticipateInThreadTest extends TestCase
         $reply = create(Reply::class, ['user_id' => auth()->id()]);
 
         $updatedReply = 'You been changed, fool.';
-        $this->patch("/replies/{$reply->id}", ['body' => $updatedReply]);
+        $this->patch(route('replies.update', $reply->id), ['body' => $updatedReply]);
 
         $this->assertDatabaseHas('replies', [
             'id' => $reply->id,
@@ -108,13 +108,12 @@ class ParticipateInThreadTest extends TestCase
     {
         $reply = create(Reply::class);
 
-        $this->patch("/replies/{$reply->id}", ['body' => 'new reply'])
+        $this->patch(route('replies.update', $reply->id))
             ->assertRedirect('login');
 
         $this->signIn();
 
-        // 403: Forbidden
-        $this->patch("/replies/{$reply->id}", ['body' => 'new reply'])
+        $this->patch("/replies/{$reply->id}")
             ->assertStatus(403);
     }
 

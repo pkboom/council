@@ -10,6 +10,7 @@ use App\Thread;
 use App\User;
 use App\Channel;
 use App\Notifications\ThreadWasUpdated;
+use App\Reply;
 
 class ThreadTest extends TestCase
 {
@@ -52,14 +53,12 @@ class ThreadTest extends TestCase
     {
         Notification::fake();
 
-        $john = create(User::class);
-
         $this->signIn()
             ->thread
             ->subscribe()
             ->addReply([
                 'body' => 'Foobar',
-                'user_id' => $john->id
+                'user_id' => create(User::class)->id
             ]);
 
         Notification::assertSentTo(auth()->user(), ThreadWasUpdated::class);
@@ -72,9 +71,12 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    public function a_thread_can_make_a_string_path()
+    public function a_thread_has_a_path()
     {
-        $this->assertEquals("/threads/{$this->thread->channel->slug}/{$this->thread->slug}", $this->thread->path());
+        $this->assertEquals(
+            "/threads/{$this->thread->channel->slug}/{$this->thread->slug}",
+            $this->thread->path()
+        );
     }
 
     /** @test */
@@ -157,5 +159,19 @@ class ThreadTest extends TestCase
         $this->thread->update(['body' => '<script>alert("bad")</script><p>This is okay.</p>']);
 
         $this->assertEquals('<p>This is okay.</p>', $this->thread->body);
+    }
+
+    /** @test */
+    public function a_thread_can_have_a_best_reply()
+    {
+        $bestReply = create(Reply::class, ['thread_id' => $this->thread->id]);
+
+        $notBestReply = create(Reply::class, ['thread_id' => $this->thread->id]);
+
+        $this->thread->markBestReply($bestReply);
+
+        $this->assertTrue($this->thread->hasBestReply());
+
+        $this->assertEquals($bestReply->id, $this->thread->bestReply->id);
     }
 }
