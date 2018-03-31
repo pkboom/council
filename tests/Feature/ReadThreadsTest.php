@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Thread;
 use App\Reply;
 use App\Channel;
-use App\User;
 
 class ReadThreadsTest extends TestCase
 {
@@ -54,16 +53,15 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_filter_threads_by_any_username()
     {
-        $this->withoutExceptionHandling();
+        $thread = create(Thread::class);
 
-        $this->signIn(create(User::class, ['name' => 'JohnDoe']));
+        $this->actingAs($thread->creator);
 
-        $threadByJohn = create(Thread::class, ['user_id' => auth()->id()]);
-        $threadNotByJohn = create(Thread::class);
+        $anotherThread = create(Thread::class);
 
-        $this->get('/threads?by=JohnDoe')
-            ->assertSee($threadByJohn->title)
-            ->assertDontSee($threadNotByJohn->title);
+        $this->get('/threads?by=' . $thread->creator->name)
+            ->assertSee($thread->title)
+            ->assertDontSee($anotherThread->title);
     }
 
     /** @test */
