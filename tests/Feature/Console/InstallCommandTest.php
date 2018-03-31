@@ -28,11 +28,11 @@ class InstallCommandTest extends TestCase
     }
 
     /** @test */
-    public function it_creates_the_example_file()
+    public function it_creates_the_environment_file()
     {
         $this->assertFileNotExists('.env');
 
-        $this->artisan('council:install', ['--no-interaction' => true]);
+        $this->artisan('council:install');
 
         $this->assertFileExists('.env');
     }
@@ -40,7 +40,7 @@ class InstallCommandTest extends TestCase
     /** @test */
     public function it_generates_an_app_key()
     {
-        $this->artisan('council:install', ['--no-interaction' => true]);
+        $this->artisan('council:install');
 
         $file = file_get_contents('.env');
 
