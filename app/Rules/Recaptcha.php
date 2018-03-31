@@ -43,4 +43,14 @@ class Recaptcha implements Rule
     {
         return 'The recaptcha verification failed. Try again.';
     }
+
+    public static function isInTestMode()
+    {
+        return !Zttp::asFormParams()->post('https://www.google.com/recaptcha/api/siteverify', [
+            // 'secret' => config('services.recaptcha.secret'),
+            'secret' => '',
+            'response' => 'test',
+            'remoteip' => request()->ip()
+        ])->json()['success'];
+    }
 }
