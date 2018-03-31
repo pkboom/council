@@ -24,8 +24,6 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_view_all_threads()
     {
-        $this->withoutExceptionHandling();
-
         $this->get('/threads')
             ->assertSee($this->thread->title);
     }
@@ -33,7 +31,6 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_read_a_single_thread()
     {
-        $this->withoutExceptionHandling();
         $this->get($this->thread->path())
             ->assertSee($this->thread->title);
     }
@@ -77,13 +74,14 @@ class ReadThreadsTest extends TestCase
 
         $response = $this->getJson('/threads?popular=1')->json();
 
-        $this->assertEquals([3, 2,    0], array_column($response['data'], 'replies_count'));
+        $this->assertEquals([3, 2, 0], array_column($response['data'], 'replies_count'));
     }
 
     /** @test */
     public function a_user_can_filter_threads_by_those_that_are_unanswered()
     {
         $threadWithAReply = create(Thread::class);
+
         $reply = create(Reply::class, ['thread_id' => $threadWithAReply->id]);
 
         $threadWithoutAReply = $this->thread;
@@ -96,8 +94,6 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_request_all_replies_for_a_given_thread()
     {
-        $this->withoutExceptionHandling();
-
         $thread = create(Thread::class);
 
         create(Reply::class, ['thread_id' => $thread->id], 2);
@@ -111,7 +107,6 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function we_record_a_new_visit_each_time_the_thread_is_read()
     {
-        $this->withoutExceptionHandling();
         $thread = create(Thread::class);
 
         $this->assertSame(0, $thread->visits);
