@@ -13,15 +13,13 @@ class SearchTest extends TestCase
     /** @test */
     public function a_user_can_search_threads()
     {
-        // In a test mode, when we create threads,
-        // Algolia tries to add them into the index, making tests super slow.
-        // So when we test, we don't want it to work.
-        // In phpunit.xml, we set SCOUT_DRIVER to null.
-        // Only here it will work.
+        if (!config('scout.algolia.id')) {
+            $this->markTestSkipped('Algolia is not configured.');
+        }
+
         config(['scout.driver' => 'algolia']);
 
         create(Thread::class, [], 2);
-
         create(Thread::class, ['body' => 'A thread with the foobar term.'], 2);
 
         do {
@@ -33,6 +31,7 @@ class SearchTest extends TestCase
 
         $this->assertCount(2, $results);
 
+        // Clean up.
         Thread::latest()->take(4)->unsearchable();
     }
 }
