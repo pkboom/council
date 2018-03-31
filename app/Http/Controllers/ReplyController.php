@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Thread;
-use App\Reply;
-use App\Rules\SpamFree;
-use App\Http\Requests\CreatePostRequest;
 use Gate;
+use App\Reply;
+use App\Thread;
+use App\Rules\SpamFree;
+use Illuminate\Http\Request;
+use App\Http\Requests\CreatePostRequest;
 
 class ReplyController extends Controller
 {
@@ -45,7 +45,7 @@ class ReplyController extends Controller
 
         if (request()->expectsJson()) {
             return response(['status' => 'Reply deleted']);
-        };
+        }
 
         return back();
     }

@@ -65,7 +65,7 @@ class InstallCommand extends Command
 
     public function createEnvFile()
     {
-        if (!file_exists('.env')) {
+        if (! file_exists('.env')) {
             exec('cp .env.example .env');
 
             $this->line('.env file successfully created');

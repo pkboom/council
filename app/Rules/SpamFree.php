@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
 use App\Inspections\Spam;
+use Illuminate\Contracts\Validation\Rule;
 
 class SpamFree implements Rule
 {
@@ -17,7 +17,7 @@ class SpamFree implements Rule
         try {
             // We're going to return what it passes
             // As long as it doesn't detect any spam
-            return !app(Spam::class)->detect($value);
+            return ! app(Spam::class)->detect($value);
             //  == return !resolve(Spam::class)->detect($value);
         } catch (\Exception $e) {
             return false;

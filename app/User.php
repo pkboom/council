@@ -2,9 +2,9 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -65,7 +65,7 @@ class User extends Authenticatable
 
     public function getAvatarPathAttribute($value)
     {
-        return asset($value ? '/storage/' . $value : '/storage/avatars/default.png');
+        return asset($value ? '/storage/'.$value : '/storage/avatars/default.png');
     }
 
     public function confirm()
