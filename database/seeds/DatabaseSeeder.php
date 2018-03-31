@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Seeder;
-use App\Reply;
 use App\User;
+use App\Reply;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
