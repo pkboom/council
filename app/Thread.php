@@ -2,10 +2,10 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 use App\Filters\ThreadFilters;
 use App\Events\ThreadReceivedNewReply;
-use Laravel\Scout\Searchable;
+use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
@@ -164,6 +164,6 @@ class Thread extends Model
 
     public function hasBestReply()
     {
-        return !is_null($this->best_reply_id);
+        return ! is_null($this->best_reply_id);
     }
 }

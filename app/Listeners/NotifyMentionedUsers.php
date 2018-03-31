@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Events\ThreadReceivedNewReply;
 use App\User;
+use App\Events\ThreadReceivedNewReply;
 use App\Notifications\YouWereMentioned;
 
 class NotifyMentionedUsers
