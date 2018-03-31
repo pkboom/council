@@ -1,4 +1,4 @@
-# Council
+# Council [![Build Status](https://travis-ci.org/pkboom/council.svg?branch=master)](https://travis-ci.org/pkboom/council) 
 
 This is an open source forum that was built and maintained at Laracasts.com.
 
