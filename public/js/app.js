@@ -36945,7 +36945,7 @@ __webpack_require__(669);
 Vue.prototype.highlight = function (block) {
     if (!block) return;
 
-    block.querySelectorAll('pre').foreach(function (node) {
+    block.querySelectorAll('pre').forEach(function (node) {
         __WEBPACK_IMPORTED_MODULE_1_highlight_js___default.a.highlightBlock(node);
     });
 };
@@ -102655,38 +102655,49 @@ var render = function() {
       _c("div", { staticClass: "panel-body" }, [
         _vm.editing
           ? _c("div", [
-              _c("form", { on: { submit: _vm.update } }, [
-                _c(
-                  "div",
-                  { staticClass: "form-group" },
-                  [
-                    _c("wysiwyg", {
-                      model: {
-                        value: _vm.body,
-                        callback: function($$v) {
-                          _vm.body = $$v
-                        },
-                        expression: "body"
-                      }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("button", { staticClass: "btn btn-xs btn-primary" }, [
-                  _vm._v("Update")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-xs btn-link",
-                    attrs: { type: "button" },
-                    on: { click: _vm.cancel }
-                  },
-                  [_vm._v("Cancel")]
-                )
-              ])
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      _vm.update($event)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "div",
+                    { staticClass: "form-group" },
+                    [
+                      _c("wysiwyg", {
+                        model: {
+                          value: _vm.body,
+                          callback: function($$v) {
+                            _vm.body = $$v
+                          },
+                          expression: "body"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("button", { staticClass: "btn btn-xs btn-primary" }, [
+                    _vm._v("Update")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-xs btn-link",
+                      attrs: { type: "button" },
+                      on: { click: _vm.cancel }
+                    },
+                    [_vm._v("Cancel")]
+                  )
+                ]
+              )
             ])
           : _c("div", {
               ref: "reply-body",
