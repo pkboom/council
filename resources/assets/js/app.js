@@ -7,6 +7,17 @@ import InstantSearch from 'vue-instantsearch';
 
 window.events = new Vue();
 
+import Highlighter from 'highlight.js';
+require('highlight.js/styles/foundation.css');
+
+Vue.prototype.highlight = function (block) {
+    if (! block) return;
+
+    block.querySelectorAll('pre').forEach(function (node) {
+        Highlighter.highlightBlock(node);
+    });
+}
+
 let authorizations = require('./authorizations');
 
 Vue.prototype.authorize = function (...params) {
