@@ -27,12 +27,11 @@
 
             <div class="panel-body">
                 <div class="body">
-                    {!! $thread->body !!}
+                    <highlight content="{{ $thread->body }}"></highlight>
                 </div>
             </div>
 
             <div class="panel-footer">
-                {{--  {{ $thread->visits()->count() }} visits  --}}
                 {{ $thread->visits }} visits
             </div>
         </div>

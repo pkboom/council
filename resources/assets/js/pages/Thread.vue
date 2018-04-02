@@ -5,7 +5,7 @@
     export default {
         props: ['thread'],
 
-        components: { Replies, SubscribeButton },
+        components: {Replies, SubscribeButton},
 
         data() {
             return {
@@ -22,18 +22,6 @@
             this.resetForm();
         },
 
-        mounted() {
-            this.highlight(this.$refs.question);
-        },
-
-        watch: {
-            editing() {
-                if (! this.editing) {
-                    setTimeout(() => this.highlight(this.$refs.question), 50);
-                }
-            }
-        },
-
         methods: {
             toggleLock() {
                 let uri = `/locked-thread/${this.thread.slug}`;
@@ -45,7 +33,7 @@
 
             update() {
                 let uri = `/threads/${this.thread.channel.slug}/${this.thread.slug}`;
-
+                
                 axios.patch(uri, this.form).then(() => {
                     this.editing = false;
                     this.title = this.form.title;

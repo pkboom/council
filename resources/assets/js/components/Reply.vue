@@ -26,7 +26,9 @@
                 </form>
             </div>
 
-            <div v-else v-html="body" ref="reply-body"></div>
+            <div v-else>
+                <highlight :content="body"></highlight>
+            </div>
         </div>
 
         <div class="panel-footer level" v-if="authorize('owns', reply) || authorize('owns', reply.thread)">
@@ -47,7 +49,7 @@
     export default {
         props: ['reply'],
 
-        components: { Favorite },
+        components: {Favorite},
 
         data() {
             return {
@@ -70,17 +72,16 @@
             });
         },
 
-        mounted() {
-            this.highlight(this.$refs['reply-body']);
-        },
+        // watch: {
+        //     editing() {
+        //         if (this.editing) return;
 
-        watch: {
-            editing() {
-                if (! this.editing) {
-                    setTimeout(() => this.highlight(this.$refs['reply-body']), 50);
-                }
-            }
-        },
+        //         // Wait until DOM update is done
+        //         this.$nextTick(() => {
+        //             this.highlight(this.$refs.body);
+        //         })
+        //     }
+        // },
 
         methods: {
             update() {

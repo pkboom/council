@@ -7,17 +7,6 @@ import InstantSearch from 'vue-instantsearch';
 
 window.events = new Vue();
 
-import Highlighter from 'highlight.js';
-require('highlight.js/styles/foundation.css');
-
-Vue.prototype.highlight = function (block) {
-    if (! block) return;
-
-    block.querySelectorAll('pre').forEach(function (node) {
-        Highlighter.highlightBlock(node);
-    });
-}
-
 let authorizations = require('./authorizations');
 
 Vue.prototype.authorize = function (...params) {
@@ -44,6 +33,7 @@ Vue.component('paginator', require('./components/Paginator.vue'));
 Vue.component('user-notifications', require('./components/UserNotifications.vue'));
 Vue.component('avatar-form', require('./components/AvatarForm.vue'));
 Vue.component('wysiwyg', require('./components/Wysiwyg.vue'));
+Vue.component('highlight', require('./components/Highlight.vue'));
 
 Vue.component('thread-view', require('./pages/Thread.vue'));
 

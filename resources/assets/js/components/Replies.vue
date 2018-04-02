@@ -19,7 +19,7 @@
     import collection from '../mixins/collection';
 
     export default {
-        components: { Reply, NewReply },
+        components: {Reply, NewReply},
 
         mixins: [collection],
 

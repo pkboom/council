@@ -8,7 +8,7 @@
 
     <div class="panel-body">
         <div class="form-group">
-            <wysiwyg :value="form.body"></wysiwyg>
+            <wysiwyg v-model="form.body"></wysiwyg>
         </div>
     </div>
 
@@ -47,7 +47,9 @@
         </div>
     </div>
 
-    <div class="panel-body" v-html="body" ref="question"></div> 
+    <div class="panel-body">
+        <highlight :content="body"></highlight>
+    </div> 
 
     <div class="panel-footer" v-if="authorize('owns', thread)">
         <button class="btn btn-xs" @click="editing = true">Edit</button>
