@@ -15,7 +15,7 @@ class SpamFree implements Rule
     public function passes($attribute, $value)
     {
         try {
-            return !app(Spam::class)->detect($value);
+            return ! app(Spam::class)->detect($value);
         } catch (\Exception $e) {
             return false;
         }
