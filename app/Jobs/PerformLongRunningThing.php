@@ -3,11 +3,11 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
 
 class PerformLongRunningThing implements ShouldQueue
 {
@@ -33,6 +33,6 @@ class PerformLongRunningThing implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('Proof of concept.' . $this->value);
+        Log::info('Proof of concept.'.$this->value);
     }
 }
