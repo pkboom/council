@@ -1,5 +1,12 @@
 <?php
 
+use App\Jobs\PerformLongRunningThing;
+
+Route::get('some', function () {
+    // PerformLongRunningThing::dispatch('Now')->delay(now()->addMinutes(3));
+    dispatch(new PerformLongRunningThing('now1'))->delay(now()->addMinute());
+});
+
 Route::redirect('/', 'threads');
 
 Auth::routes();
