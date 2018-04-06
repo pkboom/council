@@ -1,5 +1,12 @@
 <?php
 
+use App\Jobs\PerformLongRunningThing;
+
+Route::get('some', function () {
+    // PerformLongRunningThing::dispatch('Now')->delay(now()->addMinutes(3));
+    dispatch(new PerformLongRunningThing('now1'))->delay(now()->addMinute());
+});
+
 Route::redirect('/', 'threads');
 
 Auth::routes();
@@ -34,6 +41,9 @@ Route::post('/api/users/{user}/avatar', 'Api\UserAvatarController@store')->middl
 
 Route::post('locked-threads/{thread}', 'LockedThreadController@store')->middleware('admin')->name('locked-threads.store');
 Route::delete('locked-threads/{thread}', 'LockedThreadController@destory')->middleware('admin')->name('locked-threads.destory');
+
+Route::post('pinned-threads/{thread}', 'PinnedThreadController@store')->middleware('admin')->name('pinned-threads.store');
+Route::delete('pinned-threads/{thread}', 'PinnedThreadController@destroy')->middleware('admin')->name('pinned-threads.destory');
 
 Route::namespace('Admin')->prefix('admin')->middleware('admin')->group(function () {
     Route::get('/', 'DashboardController@index')->name('admin.dashboard.index');
