@@ -61,7 +61,7 @@
                 this.editing = false;
             },
 
-            class(target) {
+            classes(target) {
                 return [
                     'btn',
                     target ? 'btn-primary' : 'btn-default'

@@ -2,7 +2,6 @@
     <div>
         <div class="level">
             <img :src="avatar" alt="" width="50" height="50" class="mr-1">
-            <h1 v-text="user.name"></h1>
             <h1>
                 {{ user.name }}
                 <small v-text="reputation"></small>

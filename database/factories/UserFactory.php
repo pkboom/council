@@ -51,16 +51,6 @@ $factory->define(App\Reply::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Channel::class, function (Faker $faker) {
-    $name = $faker->word;
-
-    return [
-        'name' => $faker->unique()->word,
-        'slug' => $name,
-        'description' => $faker->sentence,
-    ];
-});
-
 $factory->define(DatabaseNotification::class, function ($faker) {
     return [
         'id' => Uuid::uuid4()->toString(),

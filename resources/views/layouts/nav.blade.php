@@ -35,7 +35,7 @@
 
                 <li><a href="/threads/create">New Thread</a></li>
 
-                <channel-dropdown :channels="{{ $channels }}"></channel-dropdown>
+                <channel-dropdown></channel-dropdown>
             </ul>
 
             <!-- Right Side Of Navbar -->

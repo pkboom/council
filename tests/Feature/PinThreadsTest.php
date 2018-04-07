@@ -13,7 +13,6 @@ class PinThreadsTest extends TestCase
     /** @test */
     public function non_admins_may_not_pin_threads()
     {
-        // Given a thread
         $thread = create(Thread::class);
 
         $this->post(route('pinned-threads.store', $thread));
@@ -58,7 +57,7 @@ class PinThreadsTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_unlock_threads()
+    public function an_admin_can_unpin_threads()
     {
         $thread = create(Thread::class, ['pinned' => true]);
 
@@ -74,29 +73,25 @@ class PinThreadsTest extends TestCase
     /** @test */
     public function pinned_threads_should_be_at_top()
     {
-        create(Thread::class, [], 2);
+        $threads = create(Thread::class, [], 3);
 
-        $pinnedThread = create(Thread::class);
+        $ids = $threads->pluck('id');
 
-        $response = $this->getJson(route('threads'));
-
-        $response->assertJson([
+        $this->getJson(route('threads'))->assertJson([
             'data' => [
-                ['id' => 1],
-                ['id' => 2],
-                ['id' => 3],
+                ['id' => $ids[0]],
+                ['id' => $ids[1]],
+                ['id' => $ids[2]],
             ]
         ]);
 
-        $pinnedThread->update(['pinned' => true]);
+        $pinned = tap($threads->last())->update(['pinned' => true]);
 
-        $response = $this->getJson(route('threads'));
-
-        $response->assertJson([
+        $this->getJson(route('threads'))->assertJson([
             'data' => [
-                ['id' => 3],
-                ['id' => 1],
-                ['id' => 2],
+                ['id' => $pinned->id],
+                ['id' => $ids[0]],
+                ['id' => $ids[1]],
             ]
         ]);
     }
