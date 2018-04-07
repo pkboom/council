@@ -25,6 +25,7 @@ class ChannelController extends Controller
     public function edit(Channel $channel)
     {
         dd($channel);
+
         return view('admin.channels.edit', compact('channel'));
     }
 
