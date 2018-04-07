@@ -24,7 +24,6 @@ class ChannelController extends Controller
 
     public function edit(Channel $channel)
     {
-        dd($channel);
         return view('admin.channels.edit', compact('channel'));
     }
 
@@ -35,9 +34,9 @@ class ChannelController extends Controller
             'description' => 'required',
         ]);
 
-        $channel->update($data);
+        $channel->update($data + ['slug' => $data['name']]);
 
-        cache()->forget('channels');
+        // cache()->forget('channels');
 
         if (request()->wantsJson()) {
             return response($channel, 200);

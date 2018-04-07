@@ -2,12 +2,12 @@
 
 <div class="form-group">
     <label for="name">Name:</label>
-    <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+    <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $channel->name) }}" required>
 </div>
 
 <div class="form-group">
     <label for="description">Description</label>
-    <input type="text" class="form-control" id="description" name="description" value="{{ old('description') }}" required>
+    <input type="text" class="form-control" id="description" name="description" value="{{ old('description', $channel->description) }}" required>
 </div>
 
 <div class="form-group">
