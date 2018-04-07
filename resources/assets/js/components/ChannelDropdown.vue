@@ -1,16 +1,4 @@
 <template>
-<<<<<<< HEAD
-    <li class="dropdown" :class="{'open': toggle}">
-        <a href="#" class="dropdown-toggle" @click.prevent="toggle = !toggle"
-           aria-haspopup="true" aria-expanded="false">Channels <span class="caret"></span></a>
-
-        <div class="dropdown-menu channel-dropdown">
-            <div class="input-wrapper">
-                <input type="text" class="form-control" v-model="filter" placeholder="Filter Channels..."/>
-            </div>
-            <ul class="list-group channel-list">
-                <li class="list-group-item" v-for="channel in filteredThreads">
-=======
     <li class="dropdown">
         <a href="#" 
             class="dropdown-toggle" 
@@ -31,7 +19,6 @@
 
             <ul class="list-group channel-list">
                 <li class="list-group-item" v-for="channel in filterChannels">
->>>>>>> upstream/master
                     <a :href="`/threads/${channel.slug}`" v-text="channel.name"></a>
                 </li>
             </ul>
@@ -39,52 +26,19 @@
     </li>
 </template>
 
-<<<<<<< HEAD
-<style lang="scss">
-    .channel-dropdown{
-        padding:0;
-    }
-    .input-wrapper{
-        padding:.5rem 1rem;
-    }
-
-    .channel-list{
-        max-height: 400px; overflow:auto;
-        margin-bottom:0;
-        .list-group-item{
-            border-radius:0;
-            border-left: none;
-            border-right: none;
-        }
-    }
-</style>
-
-=======
->>>>>>> upstream/master
 <script>
     export default {
-        props: ['channels'],
-
         data() {
             return {
-<<<<<<< HEAD
-                toggle:false,
-                filter: ''
-            }
-        },
-
-        computed: {
-            filteredThreads() {
-                return this.channels.filter(channel => {
-                    return channel.name.toLowerCase().includes(this.filter.toLocaleLowerCase())
-                })
-            }
-        }
-    }
-</script>
-=======
+                channels: [],
                 filter: ''
             };
+        },
+
+        created() {
+            axios.get('/threads/channels').then(({ data }) => {
+                this.channels = data
+            });
         },
 
         computed: {
@@ -94,7 +48,7 @@
                     // return channel.name.toLowerCase().includes(this.filter.toLocaleLowerCase())
                 });
             }
-        }
+        },
     }
 </script>
 
@@ -119,4 +73,3 @@
         }
     }
 </style>
->>>>>>> upstream/master
