@@ -17,7 +17,10 @@ class Thread extends Model
 
     protected $appends = ['isSubscribedTo'];
 
-    protected $casts = ['locked' => 'boolean'];
+    protected $casts = [
+        'locked' => 'boolean',
+        'pinned' => 'boolean'
+    ];
 
     protected static function boot()
     {
@@ -164,6 +167,6 @@ class Thread extends Model
 
     public function hasBestReply()
     {
-        return ! is_null($this->best_reply_id);
+        return !is_null($this->best_reply_id);
     }
 }
