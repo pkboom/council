@@ -43,9 +43,15 @@ class LockThreadsTest extends TestCase
     /** @test */
     public function non_admins_may_not_unlock_a_thread()
     {
-        $this->signIn();
-
         $thread = create(Thread::class, ['locked' => true]);
+
+        $this->assertTrue($thread->fresh()->locked);
+
+        $this->delete(route('locked-threads.destory', $thread));
+
+        $this->assertTrue($thread->fresh()->locked);
+
+        $this->signIn();
 
         $this->delete(route('locked-threads.destory', $thread));
 
