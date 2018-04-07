@@ -15,7 +15,33 @@ class ChannelController extends Controller
 
     public function create()
     {
-        return view('admin.channels.create');
+        return view('admin.channels.create', [
+            'channel' => new Channel
+        ]);
+    }
+
+    public function edit(Channel $channel)
+    {
+        return view('admin.channels.edit', compact('channel'));
+    }
+
+    public function update(Channel $channel)
+    {
+        $data = request()->validate([
+            'name' => 'required|unique:channels',
+            'description' => 'required',
+        ]);
+
+        $channel->update($data);
+
+        cache()->forget('channels');
+
+        if (request()->wantsJson()) {
+            return response($channel, 200);
+        }
+
+        return redirect(route('admin.channels.index'))
+                ->with('flash', 'Your channel has been updated!');
     }
 
     public function store()
