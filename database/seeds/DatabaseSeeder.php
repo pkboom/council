@@ -13,9 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Cache::flush();
-
-        factory(Reply::class, 30)->create();
+        factory(Reply::class, 10)->create();
 
         factory(User::class)->create([
             'name' => 'a',

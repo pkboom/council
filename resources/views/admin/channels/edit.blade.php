@@ -3,6 +3,6 @@
 @section('administration-content')
     <form method="post" action="{{ route('admin.channels.update', $channel->slug) }}">
         {{ method_field('patch') }}
-        @include('admin.channels._form')
+        @include('admin.channels._form', ['buttonText' => 'Update Channel'])
     </form>
 @endsection
