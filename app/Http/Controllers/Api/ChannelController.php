@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Channel;
+use App\Http\Controllers\Controller;
 
 class ChannelController extends Controller
 {
