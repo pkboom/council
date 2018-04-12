@@ -31,7 +31,7 @@ class ChannelController extends Controller
     public function update(Channel $channel)
     {
         $data = request()->validate([
-            'name' => ['required', Rule::unique('users')->ignore($channel->id)],
+            'name' => ['required', Rule::unique('channel')->ignore($channel->id)],
             'description' => 'required',
             'color' => 'required',
             'archived' => 'required|boolean'
