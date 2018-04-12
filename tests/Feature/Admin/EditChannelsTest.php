@@ -33,12 +33,31 @@ class EditChannelsTest extends TestCase
 
         $this->patch(route('admin.channels.update', $channel->slug), [
             'name' => 'somechannel',
-            'description' => 'somedescriptionn'
+            'description' => 'somedescriptionn',
+            'archived' => true,
         ]);
 
         $this->assertDatabaseHas('channels', [
             'name' => 'somechannel',
             'description' => 'somedescriptionn'
         ]);
+    }
+
+    /** @test */
+    public function an_admin_can_archive_a_channel()
+    {
+        $this->signInAdmin();
+
+        $channel = create(Channel::class);
+
+        $this->assertFalse($channel->archived);
+
+        $this->patch(route('admin.channels.update', $channel->slug), [
+            'name' => $channel->name,
+            'description' => $channel->description,
+            'archived' => true,
+        ]);
+
+        $this->assertTrue($channel->fresh()->archived);
     }
 }

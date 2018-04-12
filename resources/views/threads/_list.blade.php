@@ -27,16 +27,16 @@
                     {{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}
                 </a>
             </div>
+        </div>
 
-            <div class="panel-body">
-                <div class="body">
-                    <highlight content="{{ $thread->body }}"></highlight>
-                </div>
+        <div class="panel-body">
+            <div class="body">
+                <highlight content="{{ $thread->body }}"></highlight>
             </div>
+        </div>
 
-            <div class="panel-footer">
-                {{ $thread->visits }} visits
-            </div>
+        <div class="panel-footer">
+            {{ $thread->visits }} visits
         </div>
     </div>
 @empty

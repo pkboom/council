@@ -174,4 +174,15 @@ class CreateThreadsTest extends TestCase
 
         $this->assertEquals("he-is-24-{$thread['id']}", $thread['slug']);
     }
+
+    /** @test */
+    public function a_new_thread_may_not_be_created_in_an_archived_channel()
+    {
+        $channel = create(Channel::class, ['archived' => true]);
+
+        $this->publishThread(['channel_id' => $channel])
+            ->assertSessionHasErrors('channel_id');
+
+        $this->assertCount(0, Thread::all());
+    }
 }

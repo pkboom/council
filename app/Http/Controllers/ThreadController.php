@@ -9,6 +9,7 @@ use App\Rules\SpamFree;
 use App\Rules\Recaptcha;
 use Illuminate\Http\Request;
 use App\Filters\ThreadFilters;
+use Illuminate\Validation\Rule;
 
 class ThreadController extends Controller
 {
@@ -51,7 +52,13 @@ class ThreadController extends Controller
             'g-recaptcha-response' => ['required', $recaptcha],
             'title' => ['required', new SpamFree],
             'body' => ['required', new SpamFree],
-            'channel_id' => 'required|exists:channels,id'
+            // 'channel_id' => 'required|exists:channels,id'
+            'channel_id' => [
+                'required',
+                Rule ::exists('channels')->where(function ($query) {
+                    $query->where('archived', false);
+                }),
+            ],
         ]);
 
         $thread = Thread::create([
@@ -71,7 +78,9 @@ class ThreadController extends Controller
 
     public function create()
     {
-        return view('threads.create');
+        return view('threads.create', [
+            'channels' => Channel::all()
+        ]);
     }
 
     public function destroy($channel, Thread $thread)
