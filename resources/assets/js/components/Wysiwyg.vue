@@ -35,4 +35,7 @@
 
 <style lang="scss">
     @import '~trix/dist/trix.css';
+    .trix-editor {
+        min-height: 100px;
+    }
 </style>
