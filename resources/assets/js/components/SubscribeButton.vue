@@ -10,23 +10,27 @@
 
         data() {
             return {
-                isSubscribedTo: this.active,
+                isActive: this.active,
             }
         },
 
         computed: {
             classes() {
-                return ['btn', this.isSubscribedTo ? 'btn-primary' : 'btn-default'];
+                return ['btn', this.isActive ? 'btn-primary' : 'btn-default'];
             }
         },
 
         methods: {
             subscribe() {
-                axios[
-                    this.isSubscribedTo ? 'delete' : 'post'
-                ](location.pathname + '/subscriptions');
+                axios[this.isActive ? 'delete' : 'post'](
+                    location.pathname + '/subscriptions'
+                );
 
-                this.isSubscribedTo = !this.isSubscribedTo;
+                this.isActive = !this.isActive;
+
+                if (this.isActive) {
+                    flash("Okay, we'll notify you when this thread is updated.");
+                }
             }
         }
     }

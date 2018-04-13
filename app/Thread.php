@@ -15,7 +15,7 @@ class Thread extends Model
 
     protected $with = ['creator', 'channel'];
 
-    protected $appends = ['isSubscribedTo'];
+    // protected $appends = ['isSubscribedTo'];
 
     protected $casts = [
         'locked' => 'boolean',
@@ -167,6 +167,6 @@ class Thread extends Model
 
     public function hasBestReply()
     {
-        return ! is_null($this->best_reply_id);
+        return !is_null($this->best_reply_id);
     }
 }
