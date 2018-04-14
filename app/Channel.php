@@ -56,6 +56,7 @@ class Channel extends Model
     public static function withArchived()
     {
         dd('asdf');
+
         return (new static)->newQueryWithoutScope('active');
     }
 }
