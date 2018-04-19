@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Trending;
 use App\Channel;
+use App\Trending;
 
 class LoadCommonData
 {
