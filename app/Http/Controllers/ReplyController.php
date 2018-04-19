@@ -13,7 +13,7 @@ class ReplyController extends Controller
 {
     public function index($channelId, Thread $thread)
     {
-        return $thread->replies()->paginate(10);
+        return $thread->paginate(config('council.pagination.perPage'));
     }
 
     public function store($channelId, Thread $thread, CreatePostRequest $form)

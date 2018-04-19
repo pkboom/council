@@ -15,11 +15,11 @@ class MentionedUserTest extends TestCase
     /** @test */
     public function mentioned_users_in_a_reply_are_notified()
     {
-        $john = create(User::class, ['name' => 'JohnDoe']);
+        $john = create(User::class, ['username' => 'JohnDoe']);
 
         $this->actingAs($john);
 
-        $jane = create(User::class, ['name' => 'JaneDoe']);
+        $jane = create(User::class, ['username' => 'JaneDoe']);
 
         $thread = create(Thread::class);
 

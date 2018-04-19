@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <button :class="classes" @click="subscribe">Subscribe</button>
-    </div>
+    <a href="#" class="ml-2 pl-2 border-l" :class="isActive ? 'font-bold': ''" @click.prevent="subscribe" v-text="isActive ? 'Subscribed' : 'Subscribe'"></a>
 </template>
 
 <script>

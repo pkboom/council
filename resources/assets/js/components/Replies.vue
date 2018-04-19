@@ -1,15 +1,18 @@
 <template>
-    <div>
-        <div v-for="(reply, index) in items" :key="reply.id">
-            <reply :reply="reply" @deleted="remove(index)"></reply>
-        </div>
-        <paginator :dataSet="dataSet" @changed="fetch"></paginator>
+    <div class="flex" style="margin-left: 56px">
+        <div>
+            <div v-for="(reply, index) in items" :key="reply.id">
+                <reply :reply="reply" @deleted="remove(index)"></reply>
+            </div>
 
-        <p v-if="$parent.locked">
-            This thead has been locked. No more replies are allowed.
-        </p>
-        
-        <new-reply @created="add" v-else></new-reply>
+            <paginator :dataSet="dataSet" @changed="fetch"></paginator>
+
+            <p v-if="$parent.locked" class="mt-4 text-sm text-grey-dark text-center">
+                This thead has been locked. No more replies are allowed.
+            </p>
+            
+            <new-reply @created="add" v-else></new-reply>
+        </div>
     </div>
 </template>
 

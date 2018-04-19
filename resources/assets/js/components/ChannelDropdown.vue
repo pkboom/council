@@ -44,7 +44,9 @@
         computed: {
             filterChannels() {
                 return this.channels.filter(channel => {
-                    return channel.name.toLowerCase().startsWith(this.filter.toLocaleLowerCase())
+                    return channel.name
+                        .toLowerCase()
+                        .startsWith(this.filter.toLocaleLowerCase());
                     // return channel.name.toLowerCase().includes(this.filter.toLocaleLowerCase())
                 });
             }

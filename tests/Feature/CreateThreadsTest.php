@@ -96,13 +96,13 @@ class CreateThreadsTest extends TestCase
             ->assertSessionHasErrors('channel_id');
     }
 
-    public function publishThread($overrides = [])
+    protected function publishThread($overrides = [])
     {
         $this->signIn();
 
         $thread = make(Thread::class, $overrides);
 
-        return $this->post(route('threads'), $thread->toArray() + ['g-recaptcha-response' => 'token']);
+        return $this->post(route('threads.store'), $thread->toArray() + ['g-recaptcha-response' => 'token']);
     }
 
     /** @test */
@@ -158,7 +158,7 @@ class CreateThreadsTest extends TestCase
 
         $this->assertEquals($thread->slug, 'foo-title');
 
-        $thread = $this->postJson(route('threads'), $thread->toArray() + ['g-recaptcha-response' => 'token'])->json();
+        $thread = $this->postJson(route('threads.store'), $thread->toArray() + ['g-recaptcha-response' => 'token'])->json();
 
         $this->assertEquals("foo-title-{$thread['id']}", $thread['slug']);
     }
@@ -181,8 +181,9 @@ class CreateThreadsTest extends TestCase
         $channel = create(Channel::class, ['archived' => true]);
 
         $this->publishThread(['channel_id' => $channel])
-            ->assertSessionHasErrors('channel_id');
+        ->assertSessionHasErrors('channel_id');
 
+        // dd(Thread::all());
         $this->assertCount(0, Thread::all());
     }
 }

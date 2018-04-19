@@ -38,18 +38,6 @@ class ReplyTest extends TestCase
     }
 
     /** @test */
-    public function a_reply_can_detect_all_mentioned_users_in_the_body()
-    {
-        $reply = new Reply([
-            'body' => '@johndoe wants to talk to @janedoe'
-        ]);
-
-        $users = $reply->mentionedUsers();
-
-        $this->assertEquals(['johndoe', 'janedoe'], $users);
-    }
-
-    /** @test */
     public function it_wraps_mentioned_users_in_the_body_within_anchor_tags()
     {
         $reply = new Reply([
