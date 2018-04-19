@@ -12,12 +12,21 @@ class ReputationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $points = [];
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->points = config('council.reputation');
+    }
+
     /** @test */
     public function a_user_gains_points_when_they_create_a_thread()
     {
         $thread = create(Thread::class);
 
-        $this->assertEquals(Reputation::THREAD_WAS_PUBLISHED, $thread->creator->reputation);
+        $this->assertEquals($this->points['thread_published'], $thread->creator->reputation);
     }
 
     /** @test */
@@ -26,6 +35,8 @@ class ReputationTest extends TestCase
         $thread = create(Thread::class);
 
         $creator = $thread->creator;
+
+        $this->assertEquals($this->points['thread_published'], $thread->creator->reputation);
 
         $thread->delete();
 
@@ -37,7 +48,7 @@ class ReputationTest extends TestCase
     {
         $reply = create(Reply::class);
 
-        $this->assertEquals(Reputation::REPLY_POSTED, $reply->owner->reputation);
+        $this->assertEquals($this->points['reply_posted'], $reply->owner->reputation);
     }
 
     /** @test */
@@ -47,9 +58,11 @@ class ReputationTest extends TestCase
 
         $owner = $reply->owner;
 
+        $this->assertEquals($this->points['reply_posted'], $reply->owner->reputation);
+
         $reply->delete();
 
-        $this->assertEquals(0, $owner->fresh()->reputation);
+        $this->assertEquals(0, $reply->owner->fresh()->reputation);
     }
 
     /** @test */
@@ -61,7 +74,8 @@ class ReputationTest extends TestCase
 
         $thread->markBestReply($reply);
 
-        $this->assertEquals(Reputation::BEST_REPLY_AWARED + Reputation::REPLY_POSTED, $reply->owner->reputation);
+        $total = $this->points['reply_posted'] + $this->points['best_reply_awarded'];
+        $this->assertEquals($total, $reply->owner->reputation);
     }
 
     /** @test */
@@ -71,9 +85,9 @@ class ReputationTest extends TestCase
 
         $reply = create(Reply::class);
 
-        $this->post(route('replies.favorite', $reply->id));
+        $this->post(route('replies.favorite', $reply));
 
-        $this->assertEquals(Reputation::REPLY_FAVORITED + Reputation::REPLY_POSTED, $reply->owner->fresh()->reputation);
+        $this->assertEquals($this->points['reply_posted'] + $this->points['reply_favorited'], $reply->owner->fresh()->reputation);
     }
 
     /** @test */
@@ -87,27 +101,6 @@ class ReputationTest extends TestCase
 
         $this->delete(route('replies.unfavorite', $reply->id));
 
-        $this->assertEquals(Reputation::REPLY_POSTED, $reply->owner->fresh()->reputation);
-    }
-
-    /** @test */
-    public function when_a_thread_owner_changes_their_preferred_best_reply_the_points_should_be_transfered()
-    {
-        // Given a thread
-        $reply = create(Reply::class);
-
-        $thread = $reply->thread;
-
-        $thread->markBestReply($reply);
-
-        $this->assertEquals(Reputation::REPLY_POSTED + Reputation::BEST_REPLY_AWARED, $reply->owner->reputation);
-
-        $bestReply = create(Reply::class, ['thread_id' => $thread->id]);
-
-        $thread->markBestReply($bestReply);
-
-        $this->assertEquals(Reputation::REPLY_POSTED + Reputation::BEST_REPLY_AWARED, $bestReply->owner->reputation);
-
-        $this->assertEquals(Reputation::REPLY_POSTED, $reply->owner->fresh()->reputation);
+        $this->assertEquals($this->points['reply_posted'], $reply->owner->fresh()->reputation);
     }
 }

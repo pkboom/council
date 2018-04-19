@@ -8,16 +8,6 @@ use Illuminate\Contracts\Validation\Rule;
 class Recaptcha implements Rule
 {
     /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Determine if the validation rule passes.
      *
      * @param  string  $attribute
@@ -46,7 +36,7 @@ class Recaptcha implements Rule
 
     public static function isInTestMode()
     {
-        return ! Zttp::asFormParams()->post('https://www.google.com/recaptcha/api/siteverify', [
+        return !Zttp::asFormParams()->post('https://www.google.com/recaptcha/api/siteverify', [
             // 'secret' => config('services.recaptcha.secret'),
             'secret' => '',
             'response' => 'test',

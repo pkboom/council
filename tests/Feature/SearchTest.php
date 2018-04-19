@@ -24,9 +24,10 @@ class SearchTest extends TestCase
 
         do {
             // Account for latency.
-            sleep(.25);
+            sleep(.5);
 
-            $results = $this->getJson('/threads/search?q=foobar')->json()['data'];
+            // $results = $this->getJson('/threads/search?q=foobar')->json()['data'];
+            $results = $this->getJson(route('search.show', ['q' => 'foobar']))->json()['data'];
         } while (empty($results));
 
         $this->assertCount(2, $results);

@@ -1,47 +1,19 @@
 @extends('layouts.app')
 
 @section('head')
-    <link href="{{ asset('css/vendor/jquery.atwho.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="/css/vendor/jquery.atwho.css">
 @endsection
 
 @section('content')
     <thread-view :thread="{{ $thread }}" inline-template>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8" v-cloak>
-                    @include('threads._question')
-    
-                    <replies @added="repliesCount++" @removed="repliesCount--"></replies>
-                </div>
-    
-                <div class="col-md-4">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <p>
-                                This Thread was published {{ $thread->created_at->diffForHumans() }} by
-                                <a href="{{ route('profile', $thread->creator )}}">{{ $thread->creator->name }}</a>, and currently 
-                                has <span v-text="repliesCount"></span> {{ str_plural('comment', $thread->replies_count) }}.
-                            </p>
+        <div>
+            @include('breadcrumbs')
 
-                            <p>
-                                <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}" v-if="signedIn"></subscribe-button>
+            <div class="py-6 leading-normal">
+                @include ('threads._question')
 
-                                <button :class="classes(locked)"
-                                    v-if="authorize('isAdmin')"
-                                    @click="toggleLock"
-                                    v-text="locked ? 'Unlocked' : 'Lock'"
-                                ></button>
-
-                                <button :class="classes(pinned)"
-                                    v-if="authorize('isAdmin')"
-                                    @click="togglePin"
-                                    v-text="pinned ? 'Unpin' : 'Pin'"
-                                ></button>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <replies @added="repliesCount++" @removed="repliesCount--"></replies>
             </div>
         </div>
     </thread-view>
- @endsection
+@endsection

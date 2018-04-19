@@ -1,19 +1,24 @@
 <template>
-    <div class="new-reply">
-        <div v-if="signedIn">
-            <div class="form-group">
-                <wysiwyg name="body" v-model="body" placeholder="Have something to say?"></wysiwyg>
-            </div>
+    <div class="py-6 ml-10">
+        <div v-if="!signedIn">
+            <p class="text-center text-sm text-grey-dark">
+                Please <a href="/login" class="text-blue link" @click.prevent="$modal.show('login')">sing in</a> to participate discussion.
+            </p>
+        </div>    
 
-            <button type="submit"
-                    class="btn btn-default"
-                    @click="addReply">Post</button>
+        <div v-else-if="! confirmed">
+            To participate in this thread, please check your email and confirm your account.
         </div>
 
-        <p class="text-center" v-else>
-            Please <a href="/login">sign in</a> to participate in this
-            discussion.
-        </p>
+        <div v-else>
+            <div class="mb-3">
+                <wysiwyg name="body" v-model="body" placeholder="Have something to say?"></wysiwyg>
+
+                <button type="submit"
+                        class="btn is-green"
+                        @click="addReply">Post</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -62,9 +67,6 @@
 
 <style scoped>
     .new-reply {
-        padding: 15px;
         background-color: #fff;
-        background-origin: 1px solid #e3e3e3;
     }
-
 </style>

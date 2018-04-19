@@ -16,11 +16,23 @@
                 body: this.thread.body,
                 form: {},
                 editing: false,
+                feedback: "",
+                errors: false
             }
         },
 
         created() {
             this.resetForm();
+        },
+
+        watch: {
+            editing(enabled) {
+                if (enabled) {
+                    this.$modal.show("update-thread");
+                } else {
+                    this.$modal.hide("update-thread");
+                }
+            }
         },
 
         methods: {
@@ -43,13 +55,18 @@
             update() {
                 let uri = `/threads/${this.thread.channel.slug}/${this.thread.slug}`;
                 
-                axios.patch(uri, this.form).then(() => {
-                    this.editing = false;
-                    this.title = this.form.title;
-                    this.body = this.form.body;
+                axios.patch(uri, this.form)
+                    .then(() => {
+                        this.editing = false;
+                        this.title = this.form.title;
+                        this.body = this.form.body;
 
-                    flash('Your thread has been updated.');
-                });
+                        flash('Your thread has been updated.');
+                    })
+                    .catch(error => {
+                        this.feedback = "Whoops, validation failed.";
+                        this.errors = error.response.data.errors;
+                    });
             },
 
             resetForm() {
@@ -59,18 +76,9 @@
                 }
 
                 this.editing = false;
-            },
 
-            classes(target) {
-                return [
-                    'btn',
-                    target ? 'btn-primary' : 'btn-default'
-                ]
-            }
+                this.$modal.hide("update-thread");
+            },
         }
     }
 </script>
-
-<style>
-    
-</style>

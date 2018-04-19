@@ -34,7 +34,7 @@ class ChannelController extends Controller
             'name' => ['required', Rule::unique('channels')->ignore($channel->id)],
             'description' => 'required',
             'color' => 'required',
-            'archived' => 'required|boolean'
+            'archived' => 'required',
         ]);
 
         $channel->update($data + ['slug' => $data['name']]);
@@ -55,6 +55,7 @@ class ChannelController extends Controller
             'name' => 'required|unique:channels',
             'description' => 'required',
             'color' => 'required',
+            'archived' => 'required',
         ]);
 
         $channel = Channel::create($data);
