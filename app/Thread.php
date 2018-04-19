@@ -4,8 +4,8 @@ namespace App;
 
 use Laravel\Scout\Searchable;
 use App\Filters\ThreadFilters;
-use App\Events\ThreadReceivedNewReply;
 use App\Events\ThreadWasPublished;
+use App\Events\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
@@ -91,7 +91,7 @@ class Thread extends Model
 
     public function getPathAttribute()
     {
-        if (!$this->channel) {
+        if (! $this->channel) {
             return '';
         }
 
@@ -132,7 +132,7 @@ class Thread extends Model
 
     public function getIsSubscribedToAttribute()
     {
-        if (!auth()->id()) {
+        if (! auth()->id()) {
             return false;
         }
 
@@ -190,7 +190,7 @@ class Thread extends Model
 
     public function hasBestReply()
     {
-        return !is_null($this->best_reply_id);
+        return ! is_null($this->best_reply_id);
     }
 
     public function toSearchableArray()
