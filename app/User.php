@@ -78,7 +78,7 @@ class User extends Authenticatable
 
     public function getAvatarPathAttribute($value)
     {
-        return asset($value ? '/storage/' . $value : '/images/avatars/default.svg');
+        return asset($value ? '/storage/'.$value : '/images/avatars/default.svg');
     }
 
     public function getIsAdminAttribute()

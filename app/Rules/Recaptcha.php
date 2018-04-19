@@ -36,7 +36,7 @@ class Recaptcha implements Rule
 
     public static function isInTestMode()
     {
-        return !Zttp::asFormParams()->post('https://www.google.com/recaptcha/api/siteverify', [
+        return ! Zttp::asFormParams()->post('https://www.google.com/recaptcha/api/siteverify', [
             // 'secret' => config('services.recaptcha.secret'),
             'secret' => '',
             'response' => 'test',
