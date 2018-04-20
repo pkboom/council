@@ -27,10 +27,6 @@ class CreateThreadsTable extends Migration
             $table->boolean('pinned')->default(false);
             $table->timestamps();
 
-            // Laravel create tables according to dates
-            // When creating a threads table, replies table hasn't been created.
-            // So we change the date of replies to 2018_01_26.
-            // Otherwise, we get an error 'Foreign key constraint is incorrectly formed'
             $table->foreign('best_reply_id')
                 ->references('id')
                 ->on('replies')
