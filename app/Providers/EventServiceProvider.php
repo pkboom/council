@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Events\ThreadWasPublished;
+use App\Listeners\NotifySubscribers;
 use Illuminate\Support\Facades\Event;
+use App\Events\ThreadReceivedNewReply;
+use App\Listeners\NotifyMentionedUsers;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -13,9 +17,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\ThreadReceivedNewReply' => [
-            'App\Listeners\NotifyMentionedUsers',
-            'App\Listeners\NotifySubscribers',
+        ThreadReceivedNewReply::class => [
+            NotifyMentionedUsers::class,
+            NotifySubscribers::class
+        ],
+        ThreadWasPublished::class => [
+            NotifyMentionedUsers::class
         ],
     ];
 

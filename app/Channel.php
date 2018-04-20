@@ -55,6 +55,6 @@ class Channel extends Model
 
     public static function withArchived()
     {
-        return (new static)->withoutGlobalScope('active');
+        return (new static)->newQueryWithoutScope('active');
     }
 }

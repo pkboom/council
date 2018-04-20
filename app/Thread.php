@@ -4,6 +4,7 @@ namespace App;
 
 use Laravel\Scout\Searchable;
 use App\Filters\ThreadFilters;
+use App\Events\ThreadWasPublished;
 use App\Events\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +16,7 @@ class Thread extends Model
 
     protected $with = ['creator', 'channel'];
 
-    // protected $appends = ['isSubscribedTo'];
+    protected $appends = ['path'];
 
     protected $casts = [
         'locked' => 'boolean',
@@ -37,13 +38,15 @@ class Thread extends Model
         static::deleting(function ($thread) {
             $thread->replies->each->delete();
 
-            Reputation::lose($thread->creator, Reputation::THREAD_WAS_PUBLISHED);
+            $thread->creator->loseReputation('thread_published');
         });
 
         static::created(function ($thread) {
             $thread->update(['slug' => $thread->title]);
 
-            Reputation::gain($thread->creator, Reputation::THREAD_WAS_PUBLISHED);
+            event(new ThreadWasPublished($thread));
+
+            $thread->creator->gainReputation('thread_published');
         });
     }
 
@@ -55,6 +58,11 @@ class Thread extends Model
     public function replies()
     {
         return $this->hasMany(Reply::class);
+    }
+
+    public function bestReply()
+    {
+        return $this->hasOne(Reply::class, 'thread_id');
     }
 
     public function addReply($reply)
@@ -71,9 +79,23 @@ class Thread extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function title()
+    {
+        return $this->title;
+    }
+
     public function path()
     {
         return "/threads/{$this->channel->slug}/{$this->slug}";
+    }
+
+    public function getPathAttribute()
+    {
+        if (! $this->channel) {
+            return '';
+        }
+
+        return $this->path();
     }
 
     public function channel()
@@ -95,8 +117,7 @@ class Thread extends Model
     public function subscribe($userId = null)
     {
         $this->subscriptions()->create([
-            'user_id' => $userId ?? auth()->id(),
-            'thread_id' => $this->id,
+            'user_id' => $userId ?: auth()->id()
             ]);
 
         return $this;
@@ -111,9 +132,13 @@ class Thread extends Model
 
     public function getIsSubscribedToAttribute()
     {
+        if (! auth()->id()) {
+            return false;
+        }
+
         return $this->subscriptions()
-                ->where('user_id', auth()->id())
-                ->exists();
+            ->where('user_id', auth()->id())
+            ->exists();
     }
 
     public function hasUpdatesFor($user)
@@ -140,11 +165,6 @@ class Thread extends Model
         $this->attributes['slug'] = $slug;
     }
 
-    public function bestReply()
-    {
-        return $this->hasOne(Reply::class)->where('thread_id', $this->best_reply_id);
-    }
-
     public function markBestReply(Reply $reply)
     {
         if ($this->hasBestReply()) {
@@ -153,12 +173,14 @@ class Thread extends Model
 
         $this->update(['best_reply_id' => $reply->id]);
 
-        Reputation::gain($reply->owner, Reputation::BEST_REPLY_AWARED);
+        $reply->owner->gainReputation('best_reply_awarded');
     }
 
-    public function toSearchableArray()
+    public function removeBestReply()
     {
-        return $this->toArray() + ['path' => $this->path()];
+        $this->bestReply->owner->loseReputation('best_reply_awarded');
+
+        $this->update(['best_reply_id' => null]);
     }
 
     public function getBodyAttribute($body)
@@ -168,6 +190,11 @@ class Thread extends Model
 
     public function hasBestReply()
     {
-        return !is_null($this->best_reply_id);
+        return ! is_null($this->best_reply_id);
+    }
+
+    public function toSearchableArray()
+    {
+        return $this->toArray() + ['path' => $this->path()];
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasReputation;
 
     protected $guarded = [];
 
@@ -19,7 +19,8 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-        'confirmed' => 'boolean'
+        'confirmed' => 'boolean',
+        'reputation' => 'integer'
     ];
 
     protected $appends = [
@@ -28,7 +29,7 @@ class User extends Authenticatable
 
     public function getRouteKeyName()
     {
-        return 'name';
+        return 'username';
     }
 
     public function threads()
@@ -36,9 +37,30 @@ class User extends Authenticatable
         return $this->hasMany(Thread::class)->latest();
     }
 
+    public function lastReply()
+    {
+        return $this->hasOne(Reply::class)->latest();
+    }
+
     public function activity()
     {
         return $this->hasMany(Activity::class);
+    }
+
+    public function confirm()
+    {
+        $this->confirmed = true;
+        $this->confirmation_token = null;
+
+        $this->save();
+    }
+
+    public function isAdmin()
+    {
+        return in_array(
+            strtolower($this->email),
+            array_map('strtolower', config('council.administrators'))
+        );
     }
 
     public function read($thread)
@@ -54,30 +76,13 @@ class User extends Authenticatable
         return sprintf('users.%s.visitis.%s', $this->id, $thread->id);
     }
 
-    public function lastReply()
-    {
-        // Fetch a specific one => hasOne relationship
-        // User has one relation of latest reply
-        // Benefit of having hasOne relationship:
-        // You can use it as a property
-        return $this->hasOne(Reply::class)->latest();
-    }
-
     public function getAvatarPathAttribute($value)
     {
-        return asset($value ? '/storage/'.$value : '/storage/avatars/default.png');
-    }
-
-    public function confirm()
-    {
-        $this->confirmed = true;
-        $this->confirmation_token = null;
-
-        $this->save();
+        return asset($value ? '/storage/'.$value : '/images/avatars/default.svg');
     }
 
     public function getIsAdminAttribute()
     {
-        return in_array($this->email, config('council.administrator'));
+        return $this->isAdmin();
     }
 }

@@ -18,7 +18,7 @@ class ThreadController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    public function index(Channel $channel, ThreadFilters $filters, Trending $trending)
+    public function index(Channel $channel, ThreadFilters $filters)
     {
         $threads = $this->getThreads($channel, $filters);
 
@@ -28,7 +28,7 @@ class ThreadController extends Controller
 
         return view('threads.index', [
             'threads' => $threads,
-            'trending' => $trending->get()
+            'channel' => $channel,
         ]);
     }
 
@@ -55,7 +55,7 @@ class ThreadController extends Controller
             // 'channel_id' => 'required|exists:channels,id'
             'channel_id' => [
                 'required',
-                Rule ::exists('channels')->where(function ($query) {
+                Rule::exists('channels', 'id')->where(function ($query) {
                     $query->where('archived', false);
                 }),
             ],

@@ -16,7 +16,7 @@ class Reply extends Model
 
     // Whenever you cast a model to an array or Json,
     // Append these custom attributes(properties) to that.
-    protected $appends = ['favoritesCount', 'isFavorited', 'isBest'];
+    protected $appends = ['favoritesCount', 'isFavorited', 'isBest', 'xp', 'path'];
 
     protected static function boot()
     {
@@ -25,13 +25,17 @@ class Reply extends Model
         static::created(function ($reply) {
             $reply->thread->increment('replies_count');
 
-            Reputation::gain($reply->owner, Reputation::REPLY_POSTED);
+            $reply->owner->gainReputation('reply_posted');
         });
 
-        static::deleted(function ($reply) {
+        static::deleting(function ($reply) {
             $reply->thread->decrement('replies_count');
 
-            Reputation::lose($reply->owner, Reputation::REPLY_POSTED);
+            $reply->owner->loseReputation('reply_posted');
+
+            if ($reply->isBest()) {
+                $reply->thread->removeBestReply();
+            }
         });
     }
 
@@ -45,9 +49,9 @@ class Reply extends Model
         return $this->belongsTo(Thread::class);
     }
 
-    public function path()
+    public function title()
     {
-        return $this->thread->path()."#reply-{$this->id}";
+        return $this->thread->title;
     }
 
     public function wasJustPublished()
@@ -56,11 +60,25 @@ class Reply extends Model
         return $this->created_at->gt(Carbon::now()->subMinute());
     }
 
-    public function mentionedUsers()
+    public function path()
     {
-        preg_match_all('/@([\w\-]+)/', $this->body, $matches);
+        $perPage = config('council.pagination.perPage');
 
-        return $matches[1];
+        $replyPosition = $this->thread->replies()->pluck('id')->search($this->id) + 1;
+
+        $page = ceil($replyPosition / $perPage);
+
+        return $this->thread->path()."?page={$page}#reply-{$this->id}";
+    }
+
+    public function getPathAttribute()
+    {
+        return $this->path();
+    }
+
+    public function getBodyAttribute($body)
+    {
+        return \Purify::clean($body);
     }
 
     public function setBodyAttribute($value)
@@ -72,13 +90,24 @@ class Reply extends Model
         );
     }
 
-    public function getIsBestAttribute()
+    public function isBest()
     {
         return $this->thread->best_reply_id == $this->id;
     }
 
-    public function getBodyAttribute($body)
+    public function getIsBestAttribute()
     {
-        return \Purify::clean($body);
+        return $this->isBest();
+    }
+
+    public function getXpAttribute()
+    {
+        $xp = config('council.reputation.reply_posted');
+
+        if ($this->isBest()) {
+            $xp += config('council.reputation.best_reply_awarded');
+        }
+
+        return $xp += $this->favorites()->count() * config('council.reputation.reply_favorited');
     }
 }

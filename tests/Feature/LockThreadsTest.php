@@ -29,7 +29,7 @@ class LockThreadsTest extends TestCase
     {
         $admin = create(User::class);
 
-        config(['council.administrator' => [$admin->email]]);
+        config(['council.administrators' => [$admin->email]]);
 
         $this->actingAs($admin);
 
@@ -63,7 +63,7 @@ class LockThreadsTest extends TestCase
     {
         $admin = create(User::class);
 
-        config(['council.administrator' => [$admin->email]]);
+        config(['council.administrators' => [$admin->email]]);
 
         $this->actingAs($admin);
 

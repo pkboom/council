@@ -2,10 +2,9 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use App\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -18,7 +17,6 @@ abstract class TestCase extends BaseTestCase
         // Foreign key constraints are not enabled by default with sqlite
         // With mysql, everything is fine.
         Schema::enableForeignKeyConstraints();
-        // DB::statement('PRAGMA foreign_keys = ON;');
     }
 
     protected function signIn($user = null)
@@ -32,7 +30,7 @@ abstract class TestCase extends BaseTestCase
     {
         $admin = $admin ?? create(User::class);
 
-        config(['council.administrator' => [$admin->email]]);
+        config(['council.administrators' => [$admin->email]]);
 
         return $this->actingAs($admin);
     }

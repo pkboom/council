@@ -2,13 +2,10 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
 class ThreadWasUpdated extends Notification
 {
-    use Queueable;
-
     /**
      * Create a new notification instance.
      *
@@ -45,6 +42,7 @@ class ThreadWasUpdated extends Notification
     {
         return [
             'message' => $this->reply->owner->name.' replied to '.$this->thread->title,
+            'notifier' => $this->reply->owner,
             'link' => $this->reply->path()
         ];
     }

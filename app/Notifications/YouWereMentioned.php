@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Reply;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
@@ -14,11 +15,11 @@ class YouWereMentioned extends Notification
      *
      * @return void
      */
-    protected $reply;
+    protected $subject;
 
-    public function __construct($reply)
+    public function __construct($subject)
     {
-        $this->reply = $reply;
+        $this->subject = $subject;
     }
 
     /**
@@ -35,8 +36,19 @@ class YouWereMentioned extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => $this->reply->owner->name.' mentioned you in '.$this->reply->thread->title,
-            'link' => $this->reply->path()
+            'message' => $this->message(),
+            'notifier' => $this->user(),
+            'link' => $this->subject->path()
         ];
+    }
+
+    public function message()
+    {
+        return sprintf('%s mentioned you in "%s"', $this->user()->username, $this->subject->title());
+    }
+
+    public function user()
+    {
+        return $this->subject instanceof Reply ? $this->subject->owner : $this->subject->creator;
     }
 }

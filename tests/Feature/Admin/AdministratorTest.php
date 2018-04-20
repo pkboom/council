@@ -4,7 +4,7 @@ namespace Tests\Feature\Admin;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\User;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdministratorTest extends TestCase
 {
@@ -13,24 +13,16 @@ class AdministratorTest extends TestCase
     /** @test */
     public function an_admin_can_access_the_admin_section()
     {
-        $admin = create(User::class);
-
-        config(['council.administrator' => [$admin->email]]);
-
-        $this->actingAs($admin)
-            ->get('/admin')
-            ->assertStatus(200);
+        $this->signInAdmin()
+            ->get(route('admin.dashboard.index'))
+            ->assertStatus(Response::HTTP_OK);
     }
 
     /** @test */
     public function non_admins_can_not_access_the_admin_section()
     {
-        $user = create(User::class);
-
-        $this->get('/admin')->assertStatus(403);
-
-        $this->actingAs($user)
-        ->get('/admin')
-        ->assertStatus(403);
+        $this->signIn()
+            ->get(route('admin.dashboard.index'))
+            ->assertStatus(403);
     }
 }
