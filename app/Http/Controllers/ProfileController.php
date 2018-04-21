@@ -7,11 +7,21 @@ use App\Activity;
 
 class ProfileController extends Controller
 {
+    public function index(User $user)
+    {
+        return [
+            'activities' => Activity::feed($user)
+        ];
+    }
+
     public function show(User $user)
     {
-        return view('profiles.show', [
-            'profileUser' => $user,
-            'activities' => Activity::feed($user),
-        ]);
+        $data = ['profileUser' => $user];
+
+        if (request()->expectsJson()) {
+            return $data;
+        }
+
+        return view('profiles.show', $data);
     }
 }

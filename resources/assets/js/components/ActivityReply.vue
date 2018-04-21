@@ -1,19 +1,16 @@
 <template>
     <activity-layout>
         <span slot="activity">
-            added a&nbsp;<a :href="activity.subject.path" class="mr-1 text-blue font-bold">reply</a>
+            added a&nbsp;<a class="mr-1 text-blue font-bold" :href="activity.subject.path">reply</a>
             {{ humanTime(activity.subject.created_at) }} in:
         </span>
 
-        <div class="text-xl font-semibold my-4" slot="heading">
-            <a :href="activity.subject.thread.path" class="text-blue font-bold mb-4">
-                "{{ activity.subject.thread.title }}"
-            </a>
+        <div slot="heading" class="text-xl font-semibold my-4">
+            <a class="text-blue font-bold mb-4" :href="activity.subject.thread.path">"{{ activity.subject.thread.title }}"</a>
 
             <p class="text-2xs text-grey-darkest font-medium mb-4">
-                Posted By: <a :href="activity.thread.creator.username" class="text-blue">
-                    {{ activity.subject.thread.creator.username }}
-                </a>
+                Posted By: <a :href="activity.subject.thread.creator.username" class="text-blue">{{
+                activity.subject.thread.creator.username }}</a>
             </p>
         </div>
 
@@ -25,7 +22,7 @@
             </div>
 
             <div class="flex items-center py-1 text-xs text-grey-darkest">
-                &#8943; <a :href="activity.subject.path" class="ml-1 text-2xs text-blue">more</a>
+                &#8943; <a class="ml-1 text-2xs text-blue" :href="activity.subject.path">more</a>
             </div>
         </div>
 
@@ -39,13 +36,11 @@
                     </g>
                 </svg>
 
-                <span class="text-grey-darker text-2xs font-semibold ml-1">
-                    {{ activity.subject.favoritesCount }} Favorite(s)
-                </span>
+                <span class="text-grey-darker text-2xs font-semibold  ml-1">{{ activity.subject.favoritesCount }} Favorite(s)</span>
             </div>
 
             <!-- Best Answer Badge -->
-            <div class="text-grey-darker text-2xs font-semibold flex items-center mr-2" v-if="activity.subject.isBest">
+            <div v-if="activity.subject.isBest" class="text-grey-darker text-2xs font-semibold flex items-center mr-2">
                 <span class="mr-2 font-bold flex items-center">
                     <span class="ml-2 mr-1">Best Answer!</span>
 
@@ -57,19 +52,17 @@
             </div>
 
             <!-- XP Badge -->
-            <div class="flex items-center w-auto h-4 px-2 bg-green rounded font-semibold text-2xs text-white">
-                XP +{{ activity.subject.xp }}
-            </div>
+            <div class="flex items-center w-auto h-4 px-2 bg-green rounded font-semibold text-2xs text-white">XP +{{ activity.subject.xp }}</div>
         </div>
     </activity-layout>
 </template>
 
 <script>
-    export default {
-        props: {
-            activity: {
-                required: true
-            }
+export default {
+    props: {
+        activity: {
+            required: true
         }
     }
+};
 </script>

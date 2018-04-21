@@ -23,10 +23,8 @@
             'signedIn' => Auth::check()
         ]) !!};
     </script>
-
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-
     @yield('head')
+    {{-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> --}}
 </head>
 
 <body class="font-sans bg-grey-lighter h-full">
@@ -57,5 +55,6 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     @yield('scripts')
+
 </body>
 </html>

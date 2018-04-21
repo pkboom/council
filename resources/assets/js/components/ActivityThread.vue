@@ -1,12 +1,12 @@
 <template>
     <activity-layout>
         <span slot="activity">
-            add a&nbsp;<a :href="activity.subject.path" class="mr-1 text-blue"><strong>thread</strong></a>
-            {{ humanTime(activity.subject.created_at )}} in:
+            added a&nbsp;<a class="mr-1 text-blue" :href="activity.subject.path"><strong>thread</strong></a>
+            {{ humanTime(activity.subject.created_at) }} in:
         </span>
 
-        <div class="text-xl font-semibold my-4" slot="heading">
-            <a :href="activity.subject.path" class="text-blue font-bold mb-4">"{{ activity.subject.title }}"</a>
+        <div slot="heading" class="text-xl font-semibold my-4">
+            <a class="text-blue font-bold mb-4" :href="activity.subject.path">"{{ activity.subject.title }}"</a>
 
             <p class="text-2xs text-grey-darkest font-medium mb-4">
                 Posted By:
@@ -18,19 +18,19 @@
 
         <div slot="body">
             <div class="text-grey-darkest leading-loose mb-4 max-h-24 overflow-hidden">
-                <div class="ml-6 my-4 pl-4 border-l-2 border-grey-darkest">
+                <div class="ml-6 my-4 pl-4 border-l-2 border-grey-dark">
                     <highlight :content="activity.subject.body"/>
                 </div>
             </div>
 
             <div class="flex items-center py-1 text-xs text-grey-darkest">
-                &#8943; <a :href="activity.subject.path" class="ml-1 text-2xs text-blue">more</a>
+                &#8943; <a class="ml-1 text-2xs text-blue" :href="activity.subject.path">more</a>
             </div>
         </div>
 
-        <div class="flex items-center mx-6 mb-6 text-sm" slot="bagdes">
-            <!-- Replies Count Bagde -->
-            <div class="text-grey-darker text-2xs font-semibold flex items-center mr-4" v-if="activity.subject.replies_count > 0">
+        <div slot="badges" class="flex items-center mx-6 mb-6 text-sm">
+            <!-- Replies Count Badge -->
+            <div v-if="activity.subject.replies_count > 0" class="text-grey-darker text-2xs font-semibold flex items-center mr-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="19" height="14" viewBox="0 0 19 14" class="mr-1">
                     <g fill="none" fill-rule="evenodd">
                         <path d="M0-3h19v19H0z"/>
@@ -45,11 +45,11 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            activity: {
-                required: true
-            }
+export default {
+    props: {
+        activity: {
+            required: true
         }
     }
+};
 </script>

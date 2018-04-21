@@ -17,44 +17,44 @@
 </template>
 
 <script>
-    export default {
-        name: 'Activities',
+export default {
+    name: 'activities',
 
-        props: {
-            user: {
-                type: Object,
-                required: true,
-            }
+    props: {
+        user: {
+            type: Object,
+            required: true
+        }
+    },
+
+    data() {
+        return {
+            dataSet: false,
+            items: false
+        };
+    },
+
+    created() {
+        this.fetch();
+    },
+
+    methods: {
+        fetch(page) {
+            axios.get(this.url(page)).then(this.refresh);
         },
 
-        data() {
-            return {
-                dataSet: false,
-                items: false
-            }
+        url(page) {
+            let url = `/profiles/${this.user.username}/activity`;
+
+            return page ? `${url}?page=${page}` : `${url}?page=1`;
         },
 
-        created() {
-            this.fetch();
-        },
+        refresh({ data }) {
+            this.dataSet = data.activities;
+            this.items = data.activities.data;
 
-        methods: {
-            fetch(page) {
-                axios.get(this.url(page)).then(this.refresh);
-            },
-
-            url(page) {
-                let url = `/profiles/${this.user.username}/activity`;
-
-                return page ? `${url}?page=${page}` : `${url}?page=1`;
-            },
-
-            refresh({data}) {
-                this.dataSet = data.activities;
-                this.items = data.activities.data;
-
-                this.$refs.timeline.scrollIntoView();
-            }
+            this.$refs.timeline.scrollIntoView();
         }
     }
+};
 </script>
