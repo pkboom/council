@@ -3,7 +3,8 @@
 
     <div class="widget border-b-0">
         @if (auth()->check())
-            <button class="btn is-green w-full" @click="$modal.show('new-thread')">Add New Thread</button>
+            {{-- <button class="btn is-green w-full" @click="$modal.show('new-thread')">Add New Thread</button> --}}
+            <button class="btn is-green w-full" @click="createThread">Add New Thread</button>
         @else
             <button class="btn is-green w-full tracking-wide" @click="$modal.show('login')">Log In To Post</button>
         @endif

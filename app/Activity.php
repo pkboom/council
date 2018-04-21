@@ -8,20 +8,33 @@ class Activity extends Model
 {
     protected $guarded = [];
 
+    protected $appends = ['favoritedModel'];
+
     public function subject()
     {
         return $this->morphTo();
     }
 
-    public static function feed($user, $take = 50)
+    public function getFavoritedModelAttribute()
+    {
+        $favoritedModel = null;
+
+        if ($this->subject_type === Favorite::class) {
+            $subject = $this->subject()->firstOrFail();
+
+            if ($subject->favorited_type == Reply::class) {
+                $favoritedModel = Reply::find($subject->favorited_id);
+            }
+        }
+
+        return $favoritedModel;
+    }
+
+    public static function feed($user)
     {
         return static::where('user_id', $user->id)
             ->latest()
             ->with('subject')
-            ->take($take)
-            ->get()
-            ->groupBy(function ($activity) {
-                return $activity->created_at->format('Y-m-d');
-            });
+            ->paginate(30);
     }
 }

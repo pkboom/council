@@ -68,7 +68,7 @@ class Reply extends Model
 
         $page = ceil($replyPosition / $perPage);
 
-        return $this->thread->path()."?page={$page}#reply-{$this->id}";
+        return $this->thread->path() . "?page={$page}#reply-{$this->id}";
     }
 
     public function getPathAttribute()
