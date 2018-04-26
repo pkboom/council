@@ -2,7 +2,7 @@
 
 namespace App\Registration;
 
-class RegistersSubscriber
+class RegistersLifetimeMember
 {
     public function handle()
     {
