@@ -3,9 +3,9 @@
 namespace App;
 
 use Carbon\Carbon;
+use App\Presenter\UserPresenter;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Presenter\UserPresenter;
 
 class User extends Authenticatable
 {
@@ -79,7 +79,7 @@ class User extends Authenticatable
 
     public function getAvatarPathAttribute($value)
     {
-        return asset($value ? '/storage/' . $value : '/images/avatars/default.svg');
+        return asset($value ? '/storage/'.$value : '/images/avatars/default.svg');
     }
 
     public function getIsAdminAttribute()
