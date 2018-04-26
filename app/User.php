@@ -5,6 +5,7 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Presenter\UserPresenter;
 
 class User extends Authenticatable
 {
@@ -78,11 +79,21 @@ class User extends Authenticatable
 
     public function getAvatarPathAttribute($value)
     {
-        return asset($value ? '/storage/'.$value : '/images/avatars/default.svg');
+        return asset($value ? '/storage/' . $value : '/images/avatars/default.svg');
     }
 
     public function getIsAdminAttribute()
     {
         return $this->isAdmin();
+    }
+
+    // If you repeat the same view logic over and over,
+    // extract that code into a reusable method.
+    // In such cases, consider creating view presenters
+    //  - or as some refer to them: view models.
+    // In view, you can use {{ $user->present()->welcomeMessage }}
+    public function present()
+    {
+        return new UserPresenter($this);
     }
 }
