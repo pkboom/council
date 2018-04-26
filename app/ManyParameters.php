@@ -1,4 +1,5 @@
 <?php
+
 // I don't have to refactor every time I see a function or method with over 4 arguments.
 // If it causes some problems, or code smell
 // Then refactor
