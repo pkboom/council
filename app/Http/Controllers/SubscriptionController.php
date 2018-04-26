@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Registration\RegistersLifetimeMember;
-use App\Registration\RegistersTeamMember;
-use App\Registration\RegistersSubscriber;
 use App\Registration\RegistersForumUser;
+use App\Registration\RegistersSubscriber;
+use App\Registration\RegistersTeamMember;
+use App\Registration\RegistersLifetimeMember;
 
 class SubscriptionController extends Controller
 {
