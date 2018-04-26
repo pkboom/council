@@ -15,7 +15,7 @@ class Coupon extends Model
 
     public function against($plan)
     {
-        if (!$this->worksWithPlan($plan)) {
+        if (! $this->worksWithPlan($plan)) {
             return false;
         }
 
